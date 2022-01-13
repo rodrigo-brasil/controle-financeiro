@@ -11,10 +11,10 @@ export const useBudgets = () => {
 }
 
 export const BudgetsProvider = ({ children }) => {
-    const [budgets, setBudgets] = useLocalStorage("budgets",[{ id: GERAL_BUDGET_ID, name: "Geral", max:0}])
-    const [expenses, setExpenses] = useLocalStorage("expenses",[])
+    const [budgets, setBudgets] = useLocalStorage("budgets", [{ id: GERAL_BUDGET_ID, name: "Geral", max: 0 }])
+    const [expenses, setExpenses] = useLocalStorage("expenses", [])
 
-    const addBudget = ({name, max}) => {
+    const addBudget = ({ name, max }) => {
         setBudgets(prevBudgets => {
             if (prevBudgets.find(budget => budget.name === name))
                 return prevBudgets
@@ -22,7 +22,17 @@ export const BudgetsProvider = ({ children }) => {
         })
     }
 
-    const addExpense = ({description, amount, budgetId}) => {
+    const editBudget = ({ id, name, max }) => {
+        setBudgets(prevBudgets => {
+            const budgetIndex = prevBudgets.findIndex(budget => budget.id === id)
+            if (budgetIndex === -1)
+                return prevBudgets
+            const budget = { ...prevBudgets[budgetIndex], name, max }
+            return [...prevBudgets.slice(0, budgetIndex), budget, ...prevBudgets.slice(budgetIndex + 1)]
+        })
+    }
+
+    const addExpense = ({ description, amount, budgetId }) => {
         setExpenses(prevExpenses => {
             return [...prevExpenses, { id: uuid(), description, amount, budgetId }]
         })
@@ -33,6 +43,7 @@ export const BudgetsProvider = ({ children }) => {
     }
 
     const removeBudget = (id) => {
+        getBudgetExpenses(id).forEach(expense => removeExpense(expense.id))
         setBudgets(prevBudgets => prevBudgets.filter(budget => budget.id !== id))
     }
 
@@ -41,7 +52,7 @@ export const BudgetsProvider = ({ children }) => {
     }
 
     return (
-        <BudgetsContext.Provider value={{ budgets, addBudget, removeBudget, expenses, addExpense, removeExpense, getBudgetExpenses }}>
+        <BudgetsContext.Provider value={{ budgets, addBudget, editBudget, removeBudget, expenses, addExpense, removeExpense, getBudgetExpenses }}>
             {children}
         </BudgetsContext.Provider>
     )

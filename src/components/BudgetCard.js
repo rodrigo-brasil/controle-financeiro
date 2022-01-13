@@ -1,21 +1,24 @@
 import { Card, ProgressBar, Stack, Button } from "react-bootstrap"
 import { currencyFormatter } from "../utils"
-import styled, { css } from "styled-components"
+import { GERAL_BUDGET_ID } from '../contexts/BudgetsContext'
+import { FiEdit2, FiPlus } from 'react-icons/fi'
+import { CgDetailsMore } from 'react-icons/cg'
 
-export const BudgetCard = ({ id, name, amount, max, overview, onClickExpense, onClickDetails, hideButtons }) => {
+
+export const BudgetCard = ({ id, name, amount, max, onEditBudget, onClickExpense, onClickDetails, hideButtons }) => {
 
     const classNames = []
     if (amount > max && max !== 0) classNames.push("bg-danger", "bg-opacity-10")
     else if (amount === max && max !== 0) classNames.push("bg-success", "bg-opacity-50")
-    else if (overview) classNames.push("bg-light", "bg-opacity-50")
+    else if (id === GERAL_BUDGET_ID) classNames.push("bg-light")
 
     return (
-        <StyledCard className={classNames.join(" ")} overview={overview ? true : false}>
+        <Card className={classNames.join(" ")}>
             <Card.Body className="d-flex flex-column justify-content-between">
                 <Card.Title className="d-flex justify-content-between align-items-baseline mb-3">
-                    <div className="me-2">{name}</div>
+                    <div className="me-2"><Button className="me-2" size="sm" variant="outline-primary" onClick={() => onEditBudget(id)}><FiEdit2 /></Button>{name}</div>
                     <div className="fw-normal d-flex align-items-baseline ">{currencyFormatter(amount)}
-                        {max && <span className="text-success fs-6 ms-1"> / {currencyFormatter(max)}</span>}
+                        {max !== 0 && <span className="text-success fs-6 ms-1"> / {currencyFormatter(max)}</span>}
                     </div>
                 </Card.Title>
                 {max !== 0 &&
@@ -29,13 +32,14 @@ export const BudgetCard = ({ id, name, amount, max, overview, onClickExpense, on
 
                 {!hideButtons && (
                     <Stack direction="horizontal" gap="2" className="mt-4" >
-                        <Button variant="outline-primary" className="ms-auto" onClick={() => onClickExpense(id)}>add despesa</Button>
-                        <Button variant="outline-secondary" onClick ={()=> onClickDetails(id)} >detalhes</Button>
+
+                        <Button size="sm" variant="outline-danger" className="ms-auto" onClick={() => onClickExpense(id)}> <FiPlus/>Adicionar despesa</Button>
+                        <Button size="sm" variant="outline-info" onClick={() => onClickDetails(id)} > <CgDetailsMore /> Detalhes</Button>
                     </Stack>
                 )}
 
             </Card.Body>
-        </StyledCard>
+        </Card>
     )
 }
 
@@ -46,11 +50,3 @@ function getProgressBarVariant(amount, max) {
     if (ratio < 0.75) return "warning"
     return "danger"
 }
-
-const StyledCard = styled(Card)`
-    border: 2px solid #ccc;
-
-    ${props => props.overview && css`
-        grid-column: 1 / -1;
-    `}
-`;

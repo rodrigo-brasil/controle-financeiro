@@ -23,12 +23,12 @@ export const AddBudgetModal = ({ show, handleClose }) => {
     return (
         <Modal show={show} onHide={handleClose}>
             <Modal.Header closeButton>
-                <Modal.Title>Adicionar Receita</Modal.Title>
+                <Modal.Title>Adicionar novo card de Receita</Modal.Title>
             </Modal.Header>
             <Form onSubmit={handleSubmit}>
                 <Modal.Body>
                     <Form.Group controlId="budgetName" className="mb-3">
-                        <Form.Label >Receita</Form.Label>
+                        <Form.Label >Nome da categoria</Form.Label>
                         <Form.Control ref={nameRef} type="text" placeholder="Nome da categoria" required />
                     </Form.Group>
                     <Form.Group controlId="budgetMax">
