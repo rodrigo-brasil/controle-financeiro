@@ -8,6 +8,7 @@ export const Information = ({ onEditBudget }) => {
     const totalBudgets = budgets.reduce((total, budget) => total + budget.max, 0)
     const totalExpenses = expenses.reduce((total, expense) => total + expense.amount, 0)
     const remainingBudgets = totalBudgets - totalExpenses;
+    const variant = remainingBudgets >= 0 ? "success" : "danger"
 
     return (
         <Row className="mt-3">
@@ -18,14 +19,14 @@ export const Information = ({ onEditBudget }) => {
                 </Alert>
             </Col>
             <Col sm={true}>
-                <Alert variant="success">
+                <Alert variant={variant}>
                     <Alert.Heading>Saldo Restante</Alert.Heading>
                     <p className="fs-4">{currencyFormatter(remainingBudgets)}</p>
 
                 </Alert>
             </Col>
             <Col sm={true}>
-                <Alert variant="danger">
+                <Alert variant="warning">
                     <Alert.Heading>Despesa Total</Alert.Heading>
                     <p className="fs-4">{currencyFormatter(totalExpenses)}</p>
                 </Alert>

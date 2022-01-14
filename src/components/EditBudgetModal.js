@@ -8,8 +8,8 @@ export const EditBudgetModal = ({ show, handleClose, budgetId }) => {
 
     const budget = budgets.find(budget => budget.id === budgetId);
 
-    const maxRef = useRef(budget?.max)
-    const nameRef = useRef(budget?.name)
+    const maxRef = useRef({value: budget?.max})
+    const nameRef = useRef({value :budget?.name})
 
     const handleSubmit = (e) => {
         e.preventDefault()

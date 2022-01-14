@@ -43,8 +43,16 @@ export const BudgetsProvider = ({ children }) => {
     }
 
     const removeBudget = (id) => {
-        getBudgetExpenses(id).forEach(expense => removeExpense(expense.id))
-        setBudgets(prevBudgets => prevBudgets.filter(budget => budget.id !== id))
+        setExpenses(prevExpenses => {
+            return prevExpenses.map(expense => {
+              if (expense.budgetId !== id) return expense
+              return { ...expense, budgetId: GERAL_BUDGET_ID }
+            })
+          })
+
+          setBudgets(prevBudgets => {
+            return prevBudgets.filter(budget => budget.id !== id)
+          })
     }
 
     const removeExpense = (id) => {
