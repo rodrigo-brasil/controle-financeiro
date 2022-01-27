@@ -1,4 +1,4 @@
-import { Button, Container, Stack } from "react-bootstrap";
+import { Button, ButtonGroup, Container, Stack } from "react-bootstrap";
 import { BudgetCard } from './components/BudgetCard'
 import { BudgetArea } from './components/BudgetArea'
 import { AddBudgetModal } from './components/AddBudgetModal'
@@ -6,8 +6,9 @@ import { AddExpenseModal } from './components/AddExpenseModal'
 import { ViewExpensesModal } from "./components/ViewExpensesModal";
 import { Information } from './components/Information';
 import { EditBudgetModal } from "./components/EditBudgetModal";
+import { FilterDate } from './components/FilterDate'
 import { useState } from 'react'
-import { useBudgets, GERAL_BUDGET_ID } from './contexts/BudgetsContext'
+import { useBudgets } from './contexts/BudgetsContext'
 
 function App() {
 
@@ -15,8 +16,8 @@ function App() {
   const [showAddExpenseModal, setShowAddExpenseModal] = useState(false);
   const [showViewExpenseModal, setShowViewExpenseModal] = useState(false);
   const [showEditBudgetModal, setShowEditBudgetModal] = useState(false);
-  const { budgets, getBudgetExpenses } = useBudgets();
-  const [budgetId, setBudgetId] = useState(GERAL_BUDGET_ID);
+  const { getBudgetFilterByDate, getBudgetExpenses,findDefaultBudgetFilterDate } = useBudgets();
+  const [budgetId, setBudgetId] = useState();
 
   const handleDefaultBudgetId = (id) => {
     setBudgetId(id)
@@ -34,15 +35,16 @@ function App() {
     setShowEditBudgetModal(true)
   }
 
-
-
   return (
     <>
       <Container>
-        <Stack direction="horizontal" gap="2" className="my-4 ">
-          <h1 className="me-auto">Controle de despesas</h1>
-          <Button variant="primary" onClick={() => setShowAddBudgetModal(true)}>Adicionar Categoria</Button>
-          <Button variant="outline-danger" onClick={() => handleDefaultBudgetId(GERAL_BUDGET_ID)}>Adicionar Despesa</Button>
+        <h1 className="text-center">Controle de despesas</h1>
+        <Stack direction="horizontal" gap="2" className="my-4 flex-wrap">
+          <FilterDate />
+          <ButtonGroup>
+            <Button variant="primary" onClick={() => setShowAddBudgetModal(true)}>Adicionar Categoria</Button>
+            <Button variant="outline-danger" onClick={() => handleDefaultBudgetId(findDefaultBudgetFilterDate().id)}>Adicionar Despesa</Button>
+          </ButtonGroup>
         </Stack>
 
         <Information onEditBudget={() => setShowEditBudgetModal(true)} />
@@ -50,7 +52,7 @@ function App() {
         <BudgetArea>
 
 
-          {budgets.map(budget => {
+          {getBudgetFilterByDate().map(budget => {
             const amount = getBudgetExpenses(budget.id).reduce((total, expense) => total + expense.amount, 0)
             return (<BudgetCard
               key={budget.id}

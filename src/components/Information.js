@@ -3,10 +3,12 @@ import { useBudgets } from "../contexts/BudgetsContext"
 import { currencyFormatter } from "../utils"
 
 export const Information = ({ onEditBudget }) => {
-    const { expenses, budgets } = useBudgets()
+    const { getBudgetFilterByDate, getBudgetExpenses } = useBudgets()
 
-    const totalBudgets = budgets.reduce((total, budget) => total + budget.max, 0)
-    const totalExpenses = expenses.reduce((total, expense) => total + expense.amount, 0)
+    const totalBudgets = getBudgetFilterByDate().reduce((total, budget) => total + budget.max, 0)
+    const totalExpenses = getBudgetFilterByDate().map(budget =>
+        getBudgetExpenses(budget.id).reduce((total, expense) => total + expense.amount, 0)
+    ).reduce((total, amount) => total + amount,0)
     const remainingBudgets = totalBudgets - totalExpenses;
     const variant = remainingBudgets >= 0 ? "success" : "danger"
 

@@ -4,7 +4,9 @@ import { useBudgets } from "../contexts/BudgetsContext"
 
 export const AddBudgetModal = ({ show, handleClose }) => {
 
-    const { addBudget } = useBudgets()
+    const { addBudget, filterDate } = useBudgets()
+
+    const { month, year } = filterDate
 
     const nameRef = useRef()
     const maxRef = useRef()
@@ -14,7 +16,11 @@ export const AddBudgetModal = ({ show, handleClose }) => {
         addBudget(
             {
                 name: nameRef.current.value,
-                max: parseFloat(maxRef.current.value)
+                max: parseFloat(maxRef.current.value),
+                filterDate: {
+                    month: month,
+                    year: year
+                }
             }
         )
         handleClose()
@@ -33,7 +39,7 @@ export const AddBudgetModal = ({ show, handleClose }) => {
                     </Form.Group>
                     <Form.Group controlId="budgetMax">
                         <Form.Label>Valor</Form.Label>
-                        <Form.Control ref={maxRef} type="number" required min={0} step={.01} placeholder="Receita disponível" />
+                        <Form.Control ref={maxRef} type="number" defaultValue={0} required min={0} step={.01} placeholder="Receita disponível" />
                     </Form.Group>
                 </Modal.Body>
                 <Modal.Footer>

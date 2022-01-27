@@ -4,11 +4,15 @@ import { useBudgets } from "../contexts/BudgetsContext"
 
 export const AddExpenseModal = ({ show, handleClose, defaultBudgetId }) => {
 
+    const date = new Date()
+    var currentDate = date.toISOString().substring(0,10);
+
     const { addExpense, budgets } = useBudgets()
 
     const descriptionRef = useRef()
     const amountRef = useRef()
     const budgetIdRef = useRef()
+    const dateRef = useRef()
 
     const handleSubmit = (e) => {
         e.preventDefault()
@@ -16,7 +20,8 @@ export const AddExpenseModal = ({ show, handleClose, defaultBudgetId }) => {
             {
                 description: descriptionRef.current.value,
                 amount: parseFloat(amountRef.current.value),
-                budgetId:budgetIdRef.current.value
+                budgetId: budgetIdRef.current.value,
+                date: dateRef.current.value,
             }
         )
         handleClose()
@@ -37,11 +42,15 @@ export const AddExpenseModal = ({ show, handleClose, defaultBudgetId }) => {
                         <Form.Label>Valor:</Form.Label>
                         <Form.Control ref={amountRef} type="number" required min={0} step={.01} placeholder="Valor gasto" />
                     </Form.Group>
-                    <Form.Group controlId="budgetId">
+                    <Form.Group controlId="budgetId" className="mb-3">
                         <Form.Label>Categoria:</Form.Label>
                         <Form.Select ref={budgetIdRef} defaultValue={defaultBudgetId}>
                             {budgets.map(budget => <option key={budget.id} value={budget.id}>{budget.name}</option>)}
                         </Form.Select>
+                    </Form.Group>
+                    <Form.Group controlId="date">
+                        <Form.Label>Data:</Form.Label>
+                            <Form.Control ref={dateRef} type="date"  defaultValue={currentDate}  required />
                     </Form.Group>
                 </Modal.Body>
                 <Modal.Footer>

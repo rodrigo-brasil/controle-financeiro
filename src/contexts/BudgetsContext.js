@@ -1,24 +1,54 @@
-import { createContext, useContext } from "react"
+import { createContext, useCallback, useContext, useEffect } from "react"
 import { v4 as uuid } from "uuid"
 import { useLocalStorage } from "../hooks/useLocalStorage"
 
 const BudgetsContext = createContext()
-
-export const GERAL_BUDGET_ID = "GERAL"
 
 export const useBudgets = () => {
     return useContext(BudgetsContext)
 }
 
 export const BudgetsProvider = ({ children }) => {
-    const [budgets, setBudgets] = useLocalStorage("budgets", [{ id: GERAL_BUDGET_ID, name: "Geral", max: 0 }])
+    const [filterDate, setFilterDate] = useLocalStorage("FilterDate", { month: new Date().getMonth(), year: new Date().getFullYear() })
+
+    const getDefaultBudget = useCallback(() => {
+        return ({
+            id: uuid(),
+            name: "Geral",
+            isDefault: true,
+            max: 0,
+            filterDate: {
+                month: filterDate.month,
+                year: filterDate.year,
+            },
+        })
+    },[filterDate])
+
+    const [budgets, setBudgets] = useLocalStorage("budgets", [getDefaultBudget()])
     const [expenses, setExpenses] = useLocalStorage("expenses", [])
 
-    const addBudget = ({ name, max }) => {
+
+    const findDefaultBudgetFilterDate = useCallback(() => {
+        const defaultBudgetFilterDate = budgets.find(budget => budget.isDefault && budget.filterDate.month === filterDate.month && budget.filterDate.year === filterDate.year)
+        return defaultBudgetFilterDate
+    })
+    
+
+    const getBudgetFilterByDate = () => {
+        const results = budgets.filter(budget => {
+            const { month, year } = budget.filterDate
+            return month === filterDate.month && year === filterDate.year
+        })
+        // if (results.length === 0)
+        //     setBudgets(prevBudgets => ([...prevBudgets, getDefaultBudget()]))
+        return results
+    }
+
+    const addBudget = ({ name, max, filterDate }) => {
         setBudgets(prevBudgets => {
             if (prevBudgets.find(budget => budget.name === name))
                 return prevBudgets
-            return [...prevBudgets, { id: uuid(), name, max }]
+            return [...prevBudgets, { id: uuid(), name, max, filterDate }]
         })
     }
 
@@ -32,9 +62,9 @@ export const BudgetsProvider = ({ children }) => {
         })
     }
 
-    const addExpense = ({ description, amount, budgetId }) => {
+    const addExpense = ({ description, amount, budgetId, date }) => {
         setExpenses(prevExpenses => {
-            return [...prevExpenses, { id: uuid(), description, amount, budgetId }]
+            return [...prevExpenses, { id: uuid(), description, amount, budgetId, date }]
         })
     }
 
@@ -44,23 +74,29 @@ export const BudgetsProvider = ({ children }) => {
 
     const removeBudget = (id) => {
         setExpenses(prevExpenses => {
+            const defaultbudget = findDefaultBudgetFilterDate()
             return prevExpenses.map(expense => {
-              if (expense.budgetId !== id) return expense
-              return { ...expense, budgetId: GERAL_BUDGET_ID }
+                if (expense.budgetId !== id) return expense
+                return { ...expense, budgetId: defaultbudget.id }
             })
-          })
+        })
 
-          setBudgets(prevBudgets => {
+        setBudgets(prevBudgets => {
             return prevBudgets.filter(budget => budget.id !== id)
-          })
+        })
     }
 
     const removeExpense = (id) => {
         setExpenses(prevExpenses => prevExpenses.filter(expense => expense.id !== id))
     }
 
+    useEffect(() => {
+        if(findDefaultBudgetFilterDate() === undefined)
+            setBudgets(prevBudgets => ([...prevBudgets, getDefaultBudget()]))
+      }, [filterDate, findDefaultBudgetFilterDate, getDefaultBudget, setBudgets]);
+
     return (
-        <BudgetsContext.Provider value={{ budgets, addBudget, editBudget, removeBudget, expenses, addExpense, removeExpense, getBudgetExpenses }}>
+        <BudgetsContext.Provider value={{ budgets, addBudget, editBudget, removeBudget, expenses, addExpense, removeExpense, getBudgetExpenses, getBudgetFilterByDate, filterDate, setFilterDate, findDefaultBudgetFilterDate }}>
             {children}
         </BudgetsContext.Provider>
     )

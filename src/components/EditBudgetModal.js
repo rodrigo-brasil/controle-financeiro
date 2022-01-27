@@ -1,6 +1,6 @@
 import { Modal, Form, Button } from "react-bootstrap"
 import { useRef } from "react"
-import { useBudgets, GERAL_BUDGET_ID } from "../contexts/BudgetsContext"
+import { useBudgets } from "../contexts/BudgetsContext"
 
 export const EditBudgetModal = ({ show, handleClose, budgetId }) => {
 
@@ -31,7 +31,7 @@ export const EditBudgetModal = ({ show, handleClose, budgetId }) => {
             <Form onSubmit={handleSubmit}>
                 <Modal.Body>
 
-                {budgetId !== GERAL_BUDGET_ID &&
+                {budget?.isDefault &&
                     <Form.Group controlId="budgetName" className="mb-3">
                         <Form.Label >Alterar nome</Form.Label>
                         <Form.Control ref={nameRef} defaultValue={budget?.name} type="text" placeholder="Nome da categoria" required />

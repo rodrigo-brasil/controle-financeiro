@@ -6,3 +6,10 @@ export const currencyFormatter = (value) => {
         maximumFractionDigits: 2
     }).format(value);
 }
+
+export const getDateFormatted = (date) => {
+    return new Intl.DateTimeFormat('pt-BR', {
+        year: 'numeric',
+        month: 'long',
+    }).format(date);
+}
