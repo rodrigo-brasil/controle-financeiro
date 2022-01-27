@@ -31,7 +31,7 @@ export const BudgetsProvider = ({ children }) => {
     const findDefaultBudgetFilterDate = useCallback(() => {
         const defaultBudgetFilterDate = budgets.find(budget => budget.isDefault && budget.filterDate.month === filterDate.month && budget.filterDate.year === filterDate.year)
         return defaultBudgetFilterDate
-    })
+    },[budgets, filterDate])
     
 
     const getBudgetFilterByDate = () => {
