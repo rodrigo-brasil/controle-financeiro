@@ -39,7 +39,7 @@ export const ViewExpensesModal = ({ show, budgetId, handleClose }) => {
                         {getBudgetExpenses(budgetId).map(expense =>
                             <tr key={expense.id}>
                                 <td>{expense.description}</td>
-                                <td className="text-center">{expense?.date}</td>
+                                <td className="text-center">{new Date(expense?.date).toLocaleDateString()}</td>
                                 <td>{currencyFormatter(expense.amount)}</td>
                                 <td className="text-center">
                                     <Button size="sm" variant="outline-danger" onClick={() => removeExpense(expense.id)}> <FaRegTrashAlt /></Button>

@@ -31,12 +31,11 @@ export const EditBudgetModal = ({ show, handleClose, budgetId }) => {
             <Form onSubmit={handleSubmit}>
                 <Modal.Body>
 
-                {budget?.isDefault &&
                     <Form.Group controlId="budgetName" className="mb-3">
                         <Form.Label >Alterar nome</Form.Label>
                         <Form.Control ref={nameRef} defaultValue={budget?.name} type="text" placeholder="Nome da categoria" required />
                     </Form.Group>
-                }
+                
                     <Form.Group controlId="budgetMax">
                         <Form.Label>Alterar valor</Form.Label>
                         <Form.Control ref={maxRef} defaultValue={budget?.max} type="number" required min={0} step={.01} placeholder="Receita disponível" />

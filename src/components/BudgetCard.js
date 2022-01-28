@@ -8,7 +8,6 @@ export const BudgetCard = ({ id, name, amount, max, isDefault, onEditBudget, onC
 
     const classNames = []
     if (amount > max && max !== 0) classNames.push("bg-danger", "bg-opacity-10")
-    else if (amount === max && max !== 0) classNames.push("bg-success", "bg-opacity-50")
     else if (isDefault) classNames.push("bg-light")
 
     return (
@@ -19,7 +18,7 @@ export const BudgetCard = ({ id, name, amount, max, isDefault, onEditBudget, onC
                     <span className="flex-fill">{name}</span>
 
                     <div className="fw-normal d-flex align-items-baseline justify-content-center flex-fill ">
-                        <span>{currencyFormatter(amount)}</span>
+                        <span className="text-danger" >{currencyFormatter(amount)}</span>
                         {
                             max !== 0 &&
                             <>

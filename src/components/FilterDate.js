@@ -56,7 +56,7 @@ export const FilterDate = () => {
         if (option === 'next') {
             if (month === 11) {
                 setFilterDate(prevDate => ({ ...prevDate, month: 0 }))
-                setFilterDate(prevDate => ({ ...prevDate, year: prevDate.year+1 }))
+                setFilterDate(prevDate => ({ ...prevDate, year: prevDate.year + 1 }))
             }
             else {
                 setFilterDate(prevDate => ({ ...prevDate, month: prevDate.month + 1 }))
@@ -65,7 +65,7 @@ export const FilterDate = () => {
         } else {
             if (month === 0) {
                 setFilterDate(prevDate => ({ ...prevDate, month: 11 }))
-                setFilterDate(prevDate => ({ ...prevDate, year: prevDate.year-1 }))
+                setFilterDate(prevDate => ({ ...prevDate, year: prevDate.year - 1 }))
             }
             else {
                 setFilterDate(prevDate => ({ ...prevDate, month: prevDate.month - 1 }))
@@ -80,7 +80,7 @@ export const FilterDate = () => {
 
 
     return (
-        <Group className="me-auto" ref={modalRef}>
+        <Group ref={modalRef}>
             <Button variant="outline-primary" onClick={handleDateStepChange}>
                 <FaChevronLeft />
             </Button>
@@ -111,6 +111,9 @@ export const FilterDate = () => {
 
 const Group = styled(ButtonGroup)`
     min-width: 300px;
+    @media (max-width: 576px) {
+        min-width: 100%;
+    }
 `;
 
 const ModalPiker = styled.div`

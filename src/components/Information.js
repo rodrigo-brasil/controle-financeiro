@@ -2,7 +2,7 @@ import { Alert, Col, Row } from "react-bootstrap"
 import { useBudgets } from "../contexts/BudgetsContext"
 import { currencyFormatter } from "../utils"
 
-export const Information = ({ onEditBudget }) => {
+export const Information = () => {
     const { getBudgetFilterByDate, getBudgetExpenses } = useBudgets()
 
     const totalBudgets = getBudgetFilterByDate().reduce((total, budget) => total + budget.max, 0)

@@ -38,8 +38,8 @@ function App() {
   return (
     <>
       <Container>
-        <h1 className="text-center">Controle de despesas</h1>
-        <Stack direction="horizontal" gap="2" className="my-4 flex-wrap">
+        <h1 className="text-center my-1">Controle de despesas</h1>
+        <Stack direction="horizontal" gap="3" className="my-4 flex-wrap justify-content-center justify-content-lg-between ">
           <FilterDate />
           <ButtonGroup>
             <Button variant="primary" onClick={() => setShowAddBudgetModal(true)}>Adicionar Categoria</Button>
@@ -47,7 +47,7 @@ function App() {
           </ButtonGroup>
         </Stack>
 
-        <Information onEditBudget={() => setShowEditBudgetModal(true)} />
+        <Information />
 
         <BudgetArea>
 
