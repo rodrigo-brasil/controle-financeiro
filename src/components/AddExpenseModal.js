@@ -7,7 +7,7 @@ export const AddExpenseModal = ({ show, handleClose, defaultBudgetId }) => {
     const date = new Date()
     var currentDate = date.toISOString().substring(0,10);
 
-    const { addExpense, budgets } = useBudgets()
+    const { addExpense, getBudgetFilterByDate } = useBudgets()
 
     const descriptionRef = useRef()
     const amountRef = useRef()
@@ -45,7 +45,7 @@ export const AddExpenseModal = ({ show, handleClose, defaultBudgetId }) => {
                     <Form.Group controlId="budgetId" className="mb-3">
                         <Form.Label>Categoria:</Form.Label>
                         <Form.Select ref={budgetIdRef} defaultValue={defaultBudgetId}>
-                            {budgets.map(budget => <option key={budget.id} value={budget.id}>{budget.name}</option>)}
+                            {getBudgetFilterByDate().map(budget => <option key={budget.id} value={budget.id}>{budget.name}</option>)}
                         </Form.Select>
                     </Form.Group>
                     <Form.Group controlId="date">
