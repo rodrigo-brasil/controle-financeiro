@@ -35,7 +35,7 @@ export const AddExpenseModal = ({ show, handleClose, defaultBudgetId }) => {
             <Form onSubmit={handleSubmit}>
                 <Modal.Body>
                     <Form.Group controlId="description" className="mb-3">
-                        <Form.Label >Discrição:</Form.Label>
+                        <Form.Label >Descrição:</Form.Label>
                         <Form.Control ref={descriptionRef} type="text" placeholder="Descrição da despesa" required />
                     </Form.Group>
                     <Form.Group controlId="amount" className="mb-3">
