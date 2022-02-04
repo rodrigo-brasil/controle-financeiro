@@ -1,8 +1,9 @@
 # Controle de despesas
 ![GitHub repo size](https://img.shields.io/github/repo-size/iuricode/README-template?style=for-the-badge)
-![GitHub language count](https://img.shields.io/github/languages/count/iuricode/README-template?style=for-the-badge)
 
 <img src="src/assets/preview.png" alt="preview do projeto">
+
+<h4 align="center"><a href="https://controle-financeiro-taupe.vercel.app/">Clique para visitar o projeto</a></h4>
 
 > Um aplicativo CRUD no React é algo com o qual a maioria dos iniciantes luta, então nesse projeto criei um aplicativo CRUD simples construído em torno do orçamento e despesas. Este é um projeto divertido, pois abrange muitos conceitos React de nível intermediário e iniciante que se juntam para criar um projeto complexo.
 
